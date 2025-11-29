@@ -1,0 +1,604 @@
+/* ===========================
+   🌍 GFMAM Dashboard Styles
+   =========================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+body {
+  background: #ffffff;
+  color: #003366;
+  line-height: 1.6;
+  /* Use a fixed width to prevent resizing on zoom */
+  width: 1600px; 
+  margin: 0 auto; /* Center the layout */
+}
+
+/* ================= HEADER ================= */
+.main-header {
+  background-color: #fff;
+  padding: 10px 40px;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo {
+  height: 80px; /* Larger logo size */
+  width: auto;
+  margin-right: 10px;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header-title {
+  color: #002b5c;
+  font-size: 32px; /* Larger font for GFMAM */
+  font-weight: 900; /* Extra bold */
+  margin: 0;
+  line-height: 1;
+  
+}
+
+.header-subtitle {
+    font-size: 32px;
+    font-weight: 700;
+    color: #003a70;
+    margin-bottom: 10px;
+    text-align: center;       
+    width: 100%; 
+}
+
+.header-right .nav-menu {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.header-right .nav-menu li {
+  color: #002b5c;
+  font-weight: 600;
+  font-size: 16px; /* Slightly smaller font */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s ease;
+}
+
+.header-right .nav-menu li:hover {
+  color: #00843d;
+}
+
+.header-green-line {
+  width: 100%;
+  height: 6px;
+  background-color: #00843d;
+}
+
+/* ===== GFMAM SUMMARY + SPIDER CHART LAYOUT ===== */
+#gfmam-section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px; /* 3rem -> 48px */
+  flex-wrap: wrap;
+  margin: 48px auto; /* 3rem -> 48px */
+  max-width: 1400px;
+  padding: 0 32px; /* 0 2rem -> 0 32px */
+}
+
+/* ---- Left Side: GFMAM KPIs ---- */
+.summary-left {
+  flex: 1;
+  min-width: 600px;
+}
+
+.summary-left .section-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #003a70;
+    margin-bottom: 10px;
+    text-align: center;       
+    width: 100%; 
+}
+
+.kpi-grid-container {
+  display: flex;
+  flex-direction: column;
+  gap: 19.2px;
+}
+
+.kpi-grid {
+  display: grid;
+  gap: 19.2px; /* 1.2rem -> 19.2px */
+}
+
+.kpi-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.kpi-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.kpi-card {
+  background: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  text-align: center;
+  padding: 24px; /* 1.5rem -> 24px */
+  transition: 0.3s ease;
+  position: relative; /* Needed for tooltip positioning */
+}
+
+.kpi-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+}
+
+.kpi-card .kpi-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.kpi-card h3 {
+  color: #002b5c;
+  font-size: 16px; /* 1rem -> 16px */
+  font-weight: 600;
+  margin: 0;
+}
+
+.kpi-card p {
+  color: #84bd00;
+  font-weight: 700;
+  font-size: 25.6px; /* 1.6rem -> 25.6px */
+}
+
+/* ===================== SPIDER CHART (FINAL CLEAN VERSION) ===================== */
+.spider-right {
+    width: 60%;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 25px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/* Spider Canvas Size */
+#spiderChart {
+    width: 100%;
+    height: 500px !important;
+    max-height: 550px;
+}
+
+
+
+
+
+/* ====== KPI CHARTS SECTION ====== */
+.charts-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.charts-grid {
+  display: grid;
+  gap: 32px; /* 2rem -> 32px */
+}
+
+.charts-grid-4 {
+  margin-top: 32px; /* Apply margin here for the row of 4 charts */
+}
+
+/* New grid definitions for the charts section */
+.charts-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.charts-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.chart-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 19.2px; /* 1.2rem -> 19.2px */
+  height: 300px; /* Further reduced height to ensure 4 charts fit well in a row */
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border-top: 5px solid #84bd00;
+  transition: all 0.25s ease;
+  position: relative; /* Needed for tooltip positioning */
+}
+
+.chart-box:hover {
+  transform: translateY(-4px);
+}
+
+.chart-box .chart-header {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+}
+
+.chart-box canvas {
+  flex-grow: 1;
+  max-height: 280px !important;
+  width: 100% !important;
+}
+
+/* ====== Tooltip Styles ===== */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip-icon {
+  color: #00a3e0; /* Blue color for the info icon */
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.tooltip-icon:hover {
+  color: #00843d; /* Green on hover */
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 250px;
+  background-color: #002b5c; /* Dark blue background */
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 100;
+  bottom: 125%; /* Position above the icon */
+  left: 50%;
+  margin-left: -125px; /* Center the tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 400;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Arrow for the tooltip */
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #002b5c transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ===== Member Organizations Scrolling Logos ===== */
+.logo-banner-section {
+  margin: 48px 0; /* 3rem -> 48px */
+  text-align: center;
+}
+
+.logo-banner-section .section-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #003a70;
+    margin-bottom: 10px;
+    text-align: center;       
+    width: 100%; 
+}
+
+.logo-banner-wrapper {
+  overflow: hidden;
+  position: relative;
+  background: #f9f9f9;
+  border-top: 2px solid #84bd00;
+  border-bottom: 2px solid #84bd00;
+  padding: 10px 0;
+}
+
+.logo-banner {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+  animation: scrollLogos 40s linear infinite;
+  width: max-content;
+}
+
+.logo-banner img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.logo-banner img:hover {
+  transform: scale(1.08);
+}
+
+@keyframes scrollLogos {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  background: #003366;
+  color: #fff;
+  text-align: center;
+  padding: 16px; /* 1rem -> 16px */
+  margin-top: 32px; /* 2rem -> 32px */
+  font-size: 14.4px; /* 0.9rem -> 14.4px */
+}
+
+/* ===== GFMAM Summary Title Line Adjustment ===== */
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #003a70;
+    margin-bottom: 10px;
+    text-align: center;       
+    width: 100%;             
+}
+
+.section-title::after {
+    content: "";
+    display: block;
+    margin: 0 auto;          
+    width: 500px;             
+    height: 4px;
+    background-color: #00843d;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+/* ========================================
+   STYLE FOR THE NEW DARK ROW OF CHARTS
+   ======================================== */
+
+/* Container for the dark row */
+.dark-row {
+  background-color: #002b5c;
+  border-radius: 16px;
+  padding: 40px 40px; 
+  margin-top: 40px;
+  width: 100%; 
+  max-width: 1400px; 
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+.dark-row .charts-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  align-items: stretch;
+}
+
+
+/* Responsive behavior for the 3-chart row */
+@media (max-width: 1200px) {
+  .dark-row .charts-grid-3 {
+    grid-template-columns: 1fr; /* Stack them vertically on smaller screens */
+  }
+}
+
+/* ========================================
+   GLOBAL FILTER STYLES (IMPROVED)
+   ======================================== */
+.global-filter-section {
+  padding: 20px 40px; /* Reduced padding */
+  background-color: #f4f6f8;
+  margin-top: 30px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+}
+
+.filter-container {
+  max-width: 700px; /* Reduced max-width */
+  margin: 0 auto;
+  text-align: center;
+}
+
+.filter-container label {
+  display: block;
+  font-size: 17px; /* Slightly smaller font */
+  font-weight: 600;
+  color: #002b5c;
+  margin-bottom: 10px;
+}
+
+
+.selector-wrapper .choices {
+    font-size: 15px;
+}
+
+/* Input box area */
+.choices__inner {
+    padding: 10px 14px;
+    border-radius: 10px !important;
+    border: 1px solid #d1d5db !important; /* Light grey like Aramco apps */
+    background: #ffffff;
+    min-height: 48px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #003a70; /* Aramco navy */
+    transition: all 0.2s ease;
+}
+
+/* Input hover */
+.choices:hover .choices__inner {
+    border-color: #84bd00; /* Aramco green */
+    box-shadow: 0 0 0 2px rgba(132, 189, 0, 0.20);
+}
+
+/* Placeholder */
+.choices__placeholder {
+    color: #6b7280;
+    opacity: 1 !important;
+    font-weight: 400;
+}
+
+/* When dropdown opens */
+.is-open .choices__inner {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-color: #84bd00 !important;
+    box-shadow: 0 4px 10px rgba(132,189,0,0.25);
+}
+
+/* Dropdown panel */
+.choices__list--dropdown {
+    border: 1px solid #d1d5db;
+    border-top: none;
+    background: #ffffff;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    overflow: auto;
+    max-height: 250px;
+}
+
+/* Items inside dropdown */
+.choices__list--dropdown .choices__item--selectable {
+    padding: 12px 16px;
+    font-size: 15px;
+    color: #003a70; /* Aramco navy */
+    transition: background 0.15s, color 0.15s;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Last item — remove border */
+.choices__list--dropdown .choices__item:last-child {
+    border-bottom: none;
+}
+
+/* Hover style */
+.choices__list--dropdown .choices__item--selectable:hover {
+    background: #eff6e6; /* Very light Aramco green tint */
+    color: #002b5c;
+    cursor: pointer;
+}
+
+/* Selected tags */
+.choices__list--multiple .choices__item {
+    background-color: #00843d !important; /* Aramco deep green */
+    border: 1px solid #00662f !important;
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 13px;
+    color: white !important;
+}
+
+/* Remove tooltip icons inside dropdown */
+.choices__list .tooltip-container,
+.choices__list .tooltip-icon,
+.choices__list .tooltip-text {
+    display: none !important;
+}
+
+/* Scrollbar */
+.choices__list--dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.choices__list--dropdown::-webkit-scrollbar-thumb {
+    background: #c7cfd7;
+    border-radius: 10px;
+}
+
+.choices__list--dropdown::-webkit-scrollbar-thumb:hover {
+    background: #aab5bf;
+}
+
+
+/* --- NEW: Clear All Button Styles --- */
+.clear-button {
+  background-color: #e74c3c; /* Red color */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  width: 38px;  /* Fixed width */
+  height: 38px; /* Fixed height */
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.clear-button:hover {
+  background-color: #c0392b; /* Darker red on hover */
+}
+
+/* Ensure selector + clear button stay on the same row */
+.selector-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Space between search box and X button */
+}
+
+/* Let Choices.js box grow to fill row */
+.selector-wrapper .choices {
+    flex-grow: 1;
+}
+
+/* Keep the X button fixed, not wrapping */
+.clear-button {
+    flex-shrink: 0; /* Prevent shrinking */
+    height: 48px;   /* match search input */
+    width: 48px;
+    border-radius: 10px;
+}
