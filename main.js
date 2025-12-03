@@ -298,10 +298,24 @@ function renderCharts(data, metadata) {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            display: true,
-            labels: {
-              color: "#002b5c",
+            display: false, // Hide legend
+          },
+          tooltip: {
+            callbacks: {
+              beforeTitle: function() {
+                return meta.tooltip; // Show description from Info sheet
+              },
+              title: function(context) {
+                return context[0].label; // Organization name
+              },
+              label: function(context) {
+                return meta.unit + ': ' + context.parsed.y; // Show value with unit
+              }
             },
+            titleFont: { size: 14, weight: 'bold' },
+            bodyFont: { size: 12 },
+            padding: 12,
+            displayColors: false
           },
           title: {
             display: true,
