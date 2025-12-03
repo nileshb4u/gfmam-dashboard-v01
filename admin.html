@@ -204,7 +204,11 @@
         </div>
         <div class="header-right">
           <ul class="nav-menu">
+            <li><i class="fa-solid fa-globe"></i> About Us</li>
+            <li><i class="fa-solid fa-briefcase"></i> Projects</li>
+            <li><i class="fa-solid fa-book-open"></i> Publications</li>
             <li><a href="index.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+            <li><i class="fa-solid fa-calendar-days"></i> Events</li>
             <li><i class="fa-solid fa-lock"></i> Admin</li>
           </ul>
         </div>
@@ -379,7 +383,7 @@
           <div id="successMessage" class="success-message">
             Data saved successfully! The dashboard will update automatically.
           </div>
-          <div id="errorMessage" class="error-message" style="display: block; margin-top: 15px; background: #f8d7da; padding: 12px; border-radius: 4px;">
+          <div id="errorMessage" class="error-message" style="display: none; margin-top: 15px; background: #f8d7da; padding: 12px; border-radius: 4px;">
             Error saving data. Please check your connection and try again.
           </div>
         </form>
@@ -469,15 +473,15 @@
         };
 
         try {
-          // TODO: Send to Google Apps Script
-          // const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
-          //   method: "POST",
-          //   mode: "no-cors",
-          //   headers: { "Content-Type": "application/json" },
-          //   body: JSON.stringify(formData),
-          // });
+          // Send to Google Apps Script
+          const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+          });
 
-          // For now, show success message
+          // Show success message (note: with no-cors, we can't read response)
           document.getElementById("successMessage").style.display = "block";
           document.getElementById("errorMessage").style.display = "none";
 
