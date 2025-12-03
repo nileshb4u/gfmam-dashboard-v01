@@ -303,17 +303,25 @@ function renderCharts(data, metadata) {
           tooltip: {
             callbacks: {
               beforeTitle: function() {
-                // Split long tooltip text into multiple lines (max 50 chars per line)
+                // Show KPI description from Info sheet
                 const text = meta.tooltip || '';
-                if (!text) return '';
 
+                // Debug logging
+                console.log(`Tooltip for ${meta.title}: "${text}"`);
+
+                if (!text || text === 'null' || text.trim() === '') {
+                  return []; // Return empty array if no tooltip
+                }
+
+                // Split long tooltip text into multiple lines (max 60 chars per line)
                 const words = text.split(' ');
                 const lines = [];
                 let currentLine = '';
 
                 words.forEach(word => {
-                  if ((currentLine + ' ' + word).length <= 50) {
-                    currentLine += (currentLine ? ' ' : '') + word;
+                  const testLine = currentLine ? currentLine + ' ' + word : word;
+                  if (testLine.length <= 60) {
+                    currentLine = testLine;
                   } else {
                     if (currentLine) lines.push(currentLine);
                     currentLine = word;
@@ -321,6 +329,7 @@ function renderCharts(data, metadata) {
                 });
                 if (currentLine) lines.push(currentLine);
 
+                console.log(`Tooltip lines:`, lines);
                 return lines;
               },
               title: function(context) {
@@ -332,20 +341,27 @@ function renderCharts(data, metadata) {
 
                 // Format based on unit type
                 if (unit.toLowerCase().includes('%')) {
-                  return unit + ': ' + value.toFixed(2) + '%';
+                  return value.toFixed(2) + '%';
                 } else if (unit.toLowerCase().includes('time')) {
-                  return unit + ': ' + value.toFixed(1) + 'x';
+                  return value.toFixed(1) + 'x';
                 } else {
-                  return unit + ': ' + value.toLocaleString();
+                  return value.toLocaleString();
                 }
+              },
+              afterLabel: function(context) {
+                // Show unit as separate line
+                const unit = meta.unit || '';
+                return unit ? `Unit: ${unit}` : '';
               }
             },
             titleFont: { size: 14, weight: 'bold' },
             bodyFont: { size: 12 },
+            footerFont: { size: 11, style: 'italic' },
             padding: 15,
             displayColors: false,
             boxWidth: 400,
-            boxPadding: 6
+            boxPadding: 6,
+            multiKeyBackground: '#fff'
           },
           title: {
             display: true,
