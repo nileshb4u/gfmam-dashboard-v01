@@ -99,14 +99,6 @@ function buildMetadataFromInfo(infoData) {
 
   // ====== APPLY CUSTOM OVERRIDES FOR SPECIFIC KPIs ======
 
-  // Override for "Membership Share" -> "Membership Reach"
-  if (metadata["Membership Share"]) {
-    metadata["Membership Share"].title = "Membership Reach";
-    metadata["Membership Share"].column = "Number of Active Individual Members";
-    metadata["Membership Share"].tooltip = "The total number of individual members of all GFMAM Member Organization";
-    console.log("✅ Applied override for 'Membership Share' -> 'Membership Reach'");
-  }
-
   // Override for "Financial Health" - only unit and tooltip for KPI card
   if (metadata["Financial Health"]) {
     metadata["Financial Health"].unit = "USD";
