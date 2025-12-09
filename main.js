@@ -134,8 +134,11 @@ function calculateAggregateKPIs(data, metadata) {
     // Special override for Membership Share (Membership Reach)
     // Use "Number of Active Individual Members" column instead
     let column = metadata[kpiName].column;
+    let forceSummation = false;
+
     if (kpiName === "Membership Share") {
       column = "Number of Active Individual Members";
+      forceSummation = true; // Force summation, not averaging
       console.log("✅ Using 'Number of Active Individual Members' for Membership Reach calculation");
     }
 
@@ -151,8 +154,12 @@ function calculateAggregateKPIs(data, metadata) {
     });
 
     // For percentage KPIs, calculate average; for others, sum
+    // Exception: Membership Share should always sum
     const unit = metadata[kpiName].unit.toLowerCase();
-    if (unit.includes("%")) {
+    if (forceSummation) {
+      aggregates[kpiName] = sum;
+      console.log(`Membership Reach total: ${sum} (from ${count} organizations)`);
+    } else if (unit.includes("%")) {
       aggregates[kpiName] = count > 0 ? sum / count : 0;
     } else {
       aggregates[kpiName] = sum;
