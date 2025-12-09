@@ -270,17 +270,6 @@
               </select>
             </div>
 
-            <div class="form-group">
-              <label for="orgName">
-                <i class="fa-solid fa-building"></i> Organization Name *
-              </label>
-              <input
-                type="text"
-                id="orgName"
-                placeholder="Enter organization name"
-                required
-              />
-            </div>
           </div>
 
           <h3 style="color: #002b5c; margin: 30px 0 20px 0;">
@@ -288,15 +277,6 @@
           </h3>
 
           <div class="form-grid">
-            <div class="form-group">
-              <label for="totalPopulation">Total Population</label>
-              <input
-                type="number"
-                id="totalPopulation"
-                placeholder="Enter total population"
-              />
-            </div>
-
             <div class="form-group">
               <label for="activeMembers">Number of Active Individual Members</label>
               <input
@@ -307,39 +287,12 @@
             </div>
 
             <div class="form-group">
-              <label for="orgMembers">Number of Active Organizational Members</label>
-              <input
-                type="number"
-                id="orgMembers"
-                placeholder="Enter organizational members"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="totalMembers">Total Members</label>
-              <input
-                type="number"
-                id="totalMembers"
-                placeholder="Enter total members"
-              />
-            </div>
-
-            <div class="form-group">
               <label for="revenue">Total Annual Revenue (USD)</label>
               <input
                 type="number"
                 id="revenue"
                 step="0.01"
                 placeholder="Enter annual revenue"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="events">Number of Events/Conferences</label>
-              <input
-                type="number"
-                id="events"
-                placeholder="Enter number of events"
               />
             </div>
 
@@ -478,37 +431,23 @@
         console.log("Full org data:", org);
 
         // Populate form fields with existing data
-        document.getElementById("orgName").value = orgName;
-
         // Try different possible column name variations
-        const totalPop = org["Total Population to Targeted Region"] || org["Total Population"] || "";
         const activeMem = org["Number of Active Individual Members"] || org["Active Individual Members"] || "";
-        const orgMem = org["Number of Active Organizational Members"] || org["Active Organizational Members"] || "";
-        const totalMem = org["Total Members"] || "";
         const rev = org["Annual (Anualized) Revenue ($USD)"] || org["Annual Revenue ($USD)"] || org["Revenue"] || "";
-        const evts = org["Number of Events/Conferences Scheduled in the Next 18 Months"] || org["Events/Conferences"] || "";
         const calEvts = org["Number of GFMAM Calendar Events"] || org["GFMAM Calendar Events"] || "";
         const proj = org["Number of GFMAM Member Presentations Planned in the Next 18 Months"] || org["GFMAM Member Presentations"] || "";
         const hosting = org["Number of Times hosted GFMAM Members Meeting (since est. of GFMAM)"] || org["Hosted GFMAM Members Meeting"] || "";
 
         console.log("Field values:", {
-          totalPopulation: totalPop,
           activeMembers: activeMem,
-          orgMembers: orgMem,
-          totalMembers: totalMem,
           revenue: rev,
-          events: evts,
           calendarEvents: calEvts,
           projects: proj,
           meetingHosting: hosting
         });
 
-        document.getElementById("totalPopulation").value = totalPop;
         document.getElementById("activeMembers").value = activeMem;
-        document.getElementById("orgMembers").value = orgMem;
-        document.getElementById("totalMembers").value = totalMem;
         document.getElementById("revenue").value = rev;
-        document.getElementById("events").value = evts;
         document.getElementById("calendarEvents").value = calEvts;
         document.getElementById("projects").value = proj;
         document.getElementById("meetingHosting").value = hosting;
@@ -529,13 +468,9 @@
         e.preventDefault();
 
         const formData = {
-          organizationName: document.getElementById("orgName").value,
-          totalPopulation: document.getElementById("totalPopulation").value,
+          organizationName: document.getElementById("orgSelect").value,
           activeMembers: document.getElementById("activeMembers").value,
-          orgMembers: document.getElementById("orgMembers").value,
-          totalMembers: document.getElementById("totalMembers").value,
           revenue: document.getElementById("revenue").value,
-          events: document.getElementById("events").value,
           calendarEvents: document.getElementById("calendarEvents").value,
           projects: document.getElementById("projects").value,
           meetingHosting: document.getElementById("meetingHosting").value,
