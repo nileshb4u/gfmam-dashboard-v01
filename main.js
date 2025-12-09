@@ -131,7 +131,14 @@ function calculateAggregateKPIs(data, metadata) {
   const keys = Object.keys(metadata).filter(k => k !== "Spider Chart");
 
   keys.forEach((kpiName) => {
-    const column = metadata[kpiName].column;
+    // Special override for Membership Share (Membership Reach)
+    // Use "Number of Active Individual Members" column instead
+    let column = metadata[kpiName].column;
+    if (kpiName === "Membership Share") {
+      column = "Number of Active Individual Members";
+      console.log("✅ Using 'Number of Active Individual Members' for Membership Reach calculation");
+    }
+
     let sum = 0;
     let count = 0;
 
