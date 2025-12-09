@@ -108,7 +108,8 @@ function buildMetadataFromInfo(infoData) {
 
   // Override for "Financial Health"
   if (metadata["Financial Health"]) {
-    metadata["Financial Health"].tooltip = "The average of the amount of annualized Revenue of all GFMAM member Organizations";
+    metadata["Financial Health"].tooltip = "The average of the amount of annualized Revenue of all GFMAM member Organizations in USD";
+    metadata["Financial Health"].unit = "USD";
     console.log("✅ Applied override for 'Financial Health' description");
   }
 
@@ -143,9 +144,12 @@ function calculateAggregateKPIs(data, metadata) {
       }
     });
 
+    // Special handling for Financial Health: always calculate average
+    if (kpiName === "Financial Health") {
+      aggregates[kpiName] = count > 0 ? sum / count : 0;
+    }
     // For percentage KPIs, calculate average; for others, sum
-    const unit = metadata[kpiName].unit.toLowerCase();
-    if (unit.includes("%")) {
+    else if (metadata[kpiName].unit.toLowerCase().includes("%")) {
       aggregates[kpiName] = count > 0 ? sum / count : 0;
     } else {
       aggregates[kpiName] = sum;
@@ -170,8 +174,15 @@ function updateKPICards(aggregates, metadata) {
 
       let displayValue = "--";
       if (value !== undefined && value !== null) {
+        // Special formatting for Financial Health in USD
+        if (kpiName === "Financial Health") {
+          displayValue = "$" + value.toLocaleString('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+          });
+        }
         // Format based on unit type
-        if (unit.toLowerCase().includes("%")) {
+        else if (unit.toLowerCase().includes("%")) {
           displayValue = value.toFixed(2) + "%";
         } else if (unit.toLowerCase().includes("time")) {
           displayValue = value.toFixed(1) + "x";
@@ -364,8 +375,15 @@ function renderCharts(data, metadata) {
                 const value = context.parsed.y;
                 const unit = meta.unit || '';
 
+                // Special formatting for Financial Health
+                if (kpiKey === 'Financial Health') {
+                  return '$' + value.toLocaleString('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                  });
+                }
                 // Format based on unit type
-                if (unit.toLowerCase().includes('%')) {
+                else if (unit.toLowerCase().includes('%')) {
                   return value.toFixed(2) + '%';
                 } else if (unit.toLowerCase().includes('time')) {
                   return value.toFixed(1) + 'x';
@@ -409,6 +427,14 @@ function renderCharts(data, metadata) {
             ticks: {
               color: "#000000",
               callback: function (value) {
+                // Special formatting for Financial Health
+                if (kpiKey === 'Financial Health') {
+                  return '$' + value.toLocaleString('en-US', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                  });
+                }
+
                 const unit = meta.unit.toLowerCase();
                 if (unit.includes("time")) {
                   return value.toFixed(1) + "x";
