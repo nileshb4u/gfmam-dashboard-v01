@@ -144,9 +144,12 @@ function calculateAggregateKPIs(data, metadata) {
       }
     });
 
+    // Special handling for Financial Health: calculate average
+    if (kpiName === "Financial Health") {
+      aggregates[kpiName] = count > 0 ? sum / count : 0;
+    }
     // For percentage KPIs, calculate average; for others, sum
-    const unit = metadata[kpiName].unit.toLowerCase();
-    if (unit.includes("%")) {
+    else if (metadata[kpiName].unit.toLowerCase().includes("%")) {
       aggregates[kpiName] = count > 0 ? sum / count : 0;
     } else {
       aggregates[kpiName] = sum;
