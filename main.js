@@ -99,12 +99,11 @@ function buildMetadataFromInfo(infoData) {
 
   // ====== APPLY CUSTOM OVERRIDES FOR SPECIFIC KPIs ======
 
-  // Override for "Membership Share" -> "Membership Reach"
+  // Override for "Membership Share" - only title and tooltip for KPI card
   if (metadata["Membership Share"]) {
     metadata["Membership Share"].title = "Membership Reach";
-    metadata["Membership Share"].column = "Number of Active Individual Members";
     metadata["Membership Share"].tooltip = "The total number of individual members of all GFMAM Member Organization";
-    console.log("✅ Applied override for 'Membership Share' -> 'Membership Reach'");
+    console.log("✅ Applied override for 'Membership Share' title and tooltip");
   }
 
   // Override for "Financial Health" - only unit and tooltip for KPI card
@@ -133,8 +132,14 @@ function calculateAggregateKPIs(data, metadata) {
   const keys = Object.keys(metadata).filter(k => k !== "Spider Chart");
 
   keys.forEach((kpiName) => {
-    // Special handling for Financial Health: use Annualized Revenue column for card
-    const column = kpiName === "Financial Health" ? "Annualized Revenue" : metadata[kpiName].column;
+    // Special handling for specific KPIs: use different columns for cards
+    let column = metadata[kpiName].column;
+    if (kpiName === "Financial Health") {
+      column = "Annualized Revenue";
+    } else if (kpiName === "Membership Share") {
+      column = "Number of Active Individual Members";
+    }
+
     let sum = 0;
     let count = 0;
 
