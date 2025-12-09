@@ -140,16 +140,28 @@ function calculateAggregateKPIs(data, metadata) {
       column = "Number of Active Individual Members";
       forceSummation = true; // Force summation, not averaging
       console.log("✅ Using 'Number of Active Individual Members' for Membership Reach calculation");
+
+      // DEBUG: Show available columns in first row
+      if (data.length > 0) {
+        console.log("📊 Available columns in data:", Object.keys(data[0]));
+        console.log(`🔍 Looking for column: "${column}"`);
+      }
     }
 
     let sum = 0;
     let count = 0;
+    let values = []; // Track individual values for debugging
 
-    data.forEach((row) => {
+    data.forEach((row, rowIndex) => {
       const value = parseFloat(row[column]);
       if (!isNaN(value) && value !== null) {
         sum += value;
         count++;
+        if (kpiName === "Membership Share") {
+          values.push({ org: row["Organization Name"], value: value });
+        }
+      } else if (kpiName === "Membership Share") {
+        console.warn(`⚠️ Row ${rowIndex} (${row["Organization Name"]}): Invalid value for "${column}":`, row[column]);
       }
     });
 
@@ -158,7 +170,11 @@ function calculateAggregateKPIs(data, metadata) {
     const unit = metadata[kpiName].unit.toLowerCase();
     if (forceSummation) {
       aggregates[kpiName] = sum;
-      console.log(`Membership Reach total: ${sum} (from ${count} organizations)`);
+      console.log(`✅ Membership Reach calculation:`);
+      console.log(`   - Column used: "${column}"`);
+      console.log(`   - Total sum: ${sum}`);
+      console.log(`   - Organizations counted: ${count}`);
+      console.log(`   - Individual values:`, values);
     } else if (unit.includes("%")) {
       aggregates[kpiName] = count > 0 ? sum / count : 0;
     } else {
