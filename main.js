@@ -8,12 +8,14 @@
 // ====== CONFIGURATION ======
 const KVI_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTQzLow7RmZkpO7zMGrvH9q4Uclu8DJ6EHAN8aYZ62bx4KsWa3Ut8c5GsOXJIkGvfwp8T-eBj7yev0Y/pub?gid=450258484&single=true&output=csv";
 const INFO_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTQzLow7RmZkpO7zMGrvH9q4Uclu8DJ6EHAN8aYZ62bx4KsWa3Ut8c5GsOXJIkGvfwp8T-eBj7yev0Y/pub?gid=1345572784&single=true&output=csv";
+const SOCIETY_DATA_SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTQzLow7RmZkpO7zMGrvH9q4Uclu8DJ6EHAN8aYZ62bx4KsWa3Ut8c5GsOXJIkGvfwp8T-eBj7yev0Y/pub?gid=909719683&single=true&output=csv";
 
 // Global variables
 let charts = [];
 let globalChoicesSelector = null;
 let kpiMetadata = {}; // Will be populated from Info sheet
 let kviData = [];     // Will store KVI data
+let societyData = []; // Will store Society Data for raw metrics
 let kpiKeys = [];     // Will store KPI names in order
 
 // ====== FETCH & PARSE CSV HELPER FUNCTION ======
@@ -50,14 +52,15 @@ async function fetchCSV(url) {
   }
 }
 
-// ====== FETCH ALL DATA (KVI + INFO) ======
+// ====== FETCH ALL DATA (KVI + INFO + SOCIETY DATA) ======
 async function fetchAllData() {
   try {
-    console.log("🔄 Fetching KVI and Info data...");
+    console.log("🔄 Fetching KVI, Info, and Society Data...");
 
-    const [kviRaw, infoRaw] = await Promise.all([
+    const [kviRaw, infoRaw, societyRaw] = await Promise.all([
       fetchCSV(KVI_SHEET_URL),
-      fetchCSV(INFO_SHEET_URL)
+      fetchCSV(INFO_SHEET_URL),
+      fetchCSV(SOCIETY_DATA_SHEET_URL)
     ]);
 
     if (kviRaw.length === 0 || infoRaw.length === 0) {
@@ -65,7 +68,11 @@ async function fetchAllData() {
       return null;
     }
 
-    return { kviData: kviRaw, infoData: infoRaw };
+    if (societyRaw.length === 0) {
+      console.warn("⚠️ Society Data sheet is empty, some calculations may be affected");
+    }
+
+    return { kviData: kviRaw, infoData: infoRaw, societyData: societyRaw };
   } catch (error) {
     console.error("❌ Error fetching data:", error);
     return null;
@@ -126,24 +133,28 @@ function buildMetadataFromInfo(infoData) {
 }
 
 // ====== CALCULATE AGGREGATE KPIs ======
-function calculateAggregateKPIs(data, metadata) {
+function calculateAggregateKPIs(kviData, societyData, metadata) {
   const aggregates = {};
   const keys = Object.keys(metadata).filter(k => k !== "Spider Chart");
 
   keys.forEach((kpiName) => {
-    // Special override for Membership Share (Membership Reach)
-    // Use "Number of Active Individual Members" column instead
     let column = metadata[kpiName].column;
     let forceSummation = false;
+    let usesSocietyData = false;
+    let dataSource = kviData; // Default to KVI data
 
+    // Special override for Membership Share (Membership Reach)
+    // Use Society Data sheet and "Number of Active Individual Members" column
     if (kpiName === "Membership Share") {
       column = "Number of Active Individual Members";
       forceSummation = true; // Force summation, not averaging
-      console.log("✅ Using 'Number of Active Individual Members' for Membership Reach calculation");
+      usesSocietyData = true;
+      dataSource = societyData; // Use Society Data instead of KVI Data
+      console.log("✅ Using Society Data for 'Membership Reach' calculation");
 
       // DEBUG: Show available columns in first row
-      if (data.length > 0) {
-        console.log("📊 Available columns in data:", Object.keys(data[0]));
+      if (dataSource.length > 0) {
+        console.log("📊 Available columns in Society Data:", Object.keys(dataSource[0]));
         console.log(`🔍 Looking for column: "${column}"`);
       }
     }
@@ -152,7 +163,7 @@ function calculateAggregateKPIs(data, metadata) {
     let count = 0;
     let values = []; // Track individual values for debugging
 
-    data.forEach((row, rowIndex) => {
+    dataSource.forEach((row, rowIndex) => {
       const value = parseFloat(row[column]);
       if (!isNaN(value) && value !== null) {
         sum += value;
@@ -171,6 +182,7 @@ function calculateAggregateKPIs(data, metadata) {
     if (forceSummation) {
       aggregates[kpiName] = sum;
       console.log(`✅ Membership Reach calculation:`);
+      console.log(`   - Data source: ${usesSocietyData ? 'Society Data sheet' : 'KVI sheet'}`);
       console.log(`   - Column used: "${column}"`);
       console.log(`   - Total sum: ${sum}`);
       console.log(`   - Organizations counted: ${count}`);
@@ -609,14 +621,15 @@ async function initializeDashboard() {
       return;
     }
 
-    const { kviData: kviRaw, infoData } = allData;
+    const { kviData: kviRaw, infoData, societyData: societyRaw } = allData;
 
     // Build metadata from Info sheet
     kpiMetadata = buildMetadataFromInfo(infoData);
     kviData = kviRaw;
+    societyData = societyRaw;
 
     // Calculate aggregate KPIs
-    const aggregates = calculateAggregateKPIs(kviData, kpiMetadata);
+    const aggregates = calculateAggregateKPIs(kviData, societyData, kpiMetadata);
 
     // Update UI
     updateKPILabels(kpiMetadata);
