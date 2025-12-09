@@ -102,6 +102,7 @@ function buildMetadataFromInfo(infoData) {
   // Override for "Membership Share" -> "Membership Reach"
   if (metadata["Membership Share"]) {
     metadata["Membership Share"].title = "Membership Reach";
+    metadata["Membership Share"].column = "Number of Active Individual Members";
     metadata["Membership Share"].tooltip = "The total number of individual members of all GFMAM Member Organization";
     console.log("✅ Applied override for 'Membership Share' -> 'Membership Reach'");
   }
