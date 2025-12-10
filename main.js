@@ -140,8 +140,10 @@ function calculateAggregateKPIs(data, metadata) {
       }
     });
 
-    // Special handling for Financial Health and percentage KPIs: calculate average
-    if (kpiName === "Financial Health" || metadata[kpiName].unit.toLowerCase().includes("%")) {
+    // Special handling for Financial Health, F2F Meeting Hosting, and percentage KPIs: calculate average
+    if (kpiName === "Financial Health" ||
+        kpiName === "GFMAM F2F Meeting Hosting Opportunities" ||
+        metadata[kpiName].unit.toLowerCase().includes("%")) {
       aggregates[kpiName] = count > 0 ? sum / count : 0;
     } else {
       aggregates[kpiName] = sum;
